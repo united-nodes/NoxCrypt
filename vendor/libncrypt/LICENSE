@@ -1,0 +1,408 @@
+Anonymous Public Domain License
+
+Version 1.0
+
+    THIS DOCUMENT IS PROVIDED "AS-IS" WITHOUT ANY WARRANTY. TO THE
+    EXTENT PERMITTED BY APPLICABLE LAW, NO PERSON OR ENTITY, INCLUDING
+    THE DRAFTER(S) OF THIS DOCUMENT, ASSUMES RESPONSIBILITY OR LIABILITY
+    FOR LEGAL CONSEQUENCES ARISING FROM THE USE, ADOPTION, OR RELIANCE
+    ON THIS DOCUMENT. THIS DOCUMENT IS NOT LEGAL ADVICE. SEEK
+    INDEPENDENT LEGAL COUNSEL WHERE APPROPRIATE BEFORE ADOPTING OR
+    RELYING ON IT.
+
+    THE LEGAL EFFECT OF THIS DOCUMENT MAY VARY BY JURISDICTION AND BY
+    THE RIGHTS ACTUALLY HELD BY THE PERSON APPLYING IT. SOME PROVISIONS
+    MAY BE UNENFORCEABLE OR INEFFECTIVE UNDER PARTICULAR LAWS.
+
+Statement of Purpose
+
+Copyright and Related Rights (defined below) may arise automatically
+under the laws of many jurisdictions, often without registration or
+another formality.
+
+The Affirmer wishes to dedicate the Work to the Public Domain to the
+extent of the Affirmer's rights, so that any person may use, modify, and
+redistribute it, including for artificial intelligence training and
+other computational uses, without any Affirmer-imposed requirement of
+attribution, payment, or identification.
+
+The Affirmer may apply this document anonymously or pseudonymously.
+Applying it is intended as an irrevocable commitment to the public to
+the extent permitted by Applicable Law. Later revelation of the
+Affirmer's identity does not change that commitment.
+
+
+Limitations on Scope of Authority
+
+This document operates only on rights that the Affirmer owns or is
+authorized to waive or license. Nothing in it shall be construed as:
+
+  a. affecting rights of third parties in the Work or in other material;
+  b. authorizing disclosure of confidential information or conduct that
+     violates Applicable Law;
+  c. imposing obligations on persons who are not otherwise bound by law;
+     or
+  d. representing that the Work is lawful, cleared, or free of
+     third-party claims.
+
+Users remain responsible for compliance with Applicable Law and for
+obtaining any additional permissions they need.
+
+
+1. Definitions.
+
+  a. Affirmer
+
+     The person that applies this document to a Work, or on whose behalf
+     an authorized representative applies it. The Affirmer need not be
+     identified by legal name.
+
+  b. Applicable Law
+
+     The law that governs a particular issue in a particular territory,
+     including its conflict-of-laws rules and any mandatory provisions.
+
+  c. Copyright and Related Rights
+
+     The economic rights in the nature of copyright or related or
+     neighboring rights in the Work, however designated under Applicable
+     Law, including rights to reproduce, adapt, translate, distribute,
+     perform, display, communicate, and make available the Work;
+     performers', producers', and broadcasters' rights; sui generis
+     database rights; rights protecting the extraction, dissemination,
+     use, and reuse of data in the Work; rights protecting against
+     unfair competition to the extent they are based on an interest
+     analogous to copyright in the Work; and similar or equivalent
+     rights. Moral Rights are defined separately in Section 1(d). Rights
+     excluded by Section 8(a) are not included.
+
+  d. Moral Rights
+
+     Rights personal to an author or performer in relation to the Work,
+     however described under Applicable Law, including rights of
+     attribution, integrity, disclosure, and withdrawal, to the extent
+     recognized.
+
+  e. Public Domain
+
+     The status of material that is not protected by Copyright and
+     Related Rights in a particular territory. This document seeks that
+     status for the Affirmer's rights to the extent Applicable Law
+     permits. Where waiver is ineffective, the fallback license in
+     Section 4 applies instead; a license does not itself create Public
+     Domain status. Moral Rights are addressed separately in Section 5.
+
+  f. Successor
+
+     A person who acquires any of the Affirmer's Copyright and Related
+     Rights or Moral Rights in the Work, including by assignment,
+     inheritance, or operation of law.
+
+  g. Work
+
+     The material identified when the Affirmer applies this document,
+     including copies and portions of that material, and any
+     translations, adaptations, compilations, or other forms of that
+     material, but only to the extent of the Affirmer's rights in it. It
+     does not include independent contributions by other persons. The
+     Work may include literary, artistic, musical, audiovisual, software,
+     database, or other material, whether or not fixed in a tangible
+     medium.
+
+
+2. Rights Addressed.
+
+This document concerns only Copyright and Related Rights and Moral
+Rights that the Affirmer owns or is authorized to waive or license.
+Other rights are addressed in Section 8(a).
+
+
+3. Waiver.
+
+To the greatest extent permitted by, but not in contravention of,
+Applicable Law, the Affirmer hereby irrevocably and unconditionally
+waives, abandons, and surrenders all of the Affirmer's Copyright and
+Related Rights in the Work, and all claims and causes of action
+associated with those rights, whether now known or unknown, in favor of
+the public:
+
+  a. in all territories worldwide;
+  b. for the entire remaining duration of those rights, including any
+     extensions or renewals;
+  c. in any current or future medium and for any number of copies; and
+  d. for any purpose whatsoever, including commercial, advertising,
+     promotional, educational, research, private, and artificial
+     intelligence uses
+
+(the "Waiver"). To the extent permitted by Applicable Law, the Affirmer
+also consents to all acts permitted by this document that would
+otherwise require the Affirmer's authorization.
+
+The Affirmer makes the Waiver for the benefit of each member of the
+public and intends that it not be subject to revocation, rescission,
+cancellation, or termination. To the extent permitted by Applicable Law,
+the Affirmer's rights in the Work that later pass to a Successor remain
+subject to the Waiver, License, and Section 5.
+
+If and to the extent any of the Copyright and Related Rights cannot
+effectively be waived, the License in Section 4 applies to the extent
+permitted by Applicable Law. Moral Rights are addressed in Section 5.
+
+
+4. Fallback License.
+
+If and to the extent the Waiver is or proves ineffective for any reason,
+the Affirmer hereby grants, to the extent permitted by Applicable Law,
+to each person worldwide a royalty-free, non-exclusive, transferable,
+sublicensable, irrevocable, and unconditional license to exercise the
+Affirmer's Copyright and Related Rights in the Work:
+
+  a. in all territories worldwide;
+  b. for the entire remaining duration of those rights, including any
+     extensions or renewals;
+  c. in any current or future medium and for any number of copies; and
+  d. for any purpose whatsoever, including commercial, advertising,
+     promotional, educational, research, and artificial
+     intelligence uses
+
+(the "License"). The License applies automatically from the time this
+document is applied to the Work and does not depend on a prior
+determination that the Waiver is ineffective.
+
+If any part of the License is ineffective under Applicable Law, the
+remainder shall be preserved to the maximum extent permitted. To the
+extent permitted by Applicable Law, the Affirmer irrevocably undertakes
+not to exercise remaining Copyright and Related Rights in the Work, or
+assert claims associated with those rights, against any person for uses
+permitted by this document.
+
+
+5. Moral Rights and Attribution.
+
+  a. Waiver and Consent.
+
+     To the greatest extent permitted by Applicable Law, the Affirmer
+     waives the Affirmer's Moral Rights in the Work. To the extent
+     waiver is ineffective, the Affirmer consents, to the extent
+     permitted by Applicable Law, to the following acts and omissions in
+     relation to the Work:
+
+       i. using, publishing, disclosing, or making the Work available
+          without identifying the Affirmer;
+      ii. modifying, adapting, translating, or creating derivative works
+          based on the Work;
+     iii. removing or altering author-identifying material.
+
+     This consent is given in writing by this document. The Affirmer
+     irrevocably agrees, to the extent permitted by Applicable Law, not
+     to assert Moral Rights against any person for acts or omissions
+     permitted by this document, including those listed above.
+
+  b. Attribution and Notices.
+
+     The Affirmer does not request attribution. No person is required by
+     this document, as a condition of the Waiver or License, to retain
+     or reproduce any copyright notice, license notice, author name,
+     pseudonym, source information, or attribution relating to the
+     Affirmer or the Affirmer's rights in the Work; to identify the
+     Affirmer; or to indicate that changes have been made. Attribution
+     to the Affirmer is voluntary. Nothing in this document authorizes
+     false attribution of the Work to the Affirmer or any other person.
+     Nothing in this document requires a person to omit information that
+     Applicable Law requires the person to retain or disclose.
+
+
+6. Privacy Protection and Anonymity.
+
+  a. No Identification Required.
+
+     Use or redistribution of the Work does not require disclosure of
+     the Affirmer's legal name, contact details, location, or other
+     identifying information. This document does not require any user to
+     collect such information or to sign or accept anything.
+
+  b. Metadata.
+
+     To the extent permitted by Applicable Law, the Affirmer authorizes
+     removal or alteration of metadata, notices, and other identifying
+     material contained in the Work, and will not assert Copyright and
+     Related Rights or Moral Rights against such acts. This does not
+     authorize removal of third-party information or violation of
+     independent legal restrictions.
+
+  c. Non-Binding Privacy Request.
+
+     The Affirmer requests that users respect the Affirmer's choice to
+     remain anonymous or pseudonymous, avoid unnecessary public
+     disclosure of private identifying information about the Affirmer
+     obtained from the Work or its distribution, and protect such
+     information reasonably when retained. This is a request only, not a
+     condition of the Waiver or License or an enforceable restriction.
+     It does not limit disclosures required by law or reasonably
+     necessary for legal proceedings, security, provenance, research
+     integrity, or other legitimate purposes.
+
+  d. Limits of Anonymity.
+
+     This document cannot remove information already present in the
+     Work, prevent identification from other sources, or guarantee
+     anonymity. It does not create confidentiality duties or waive
+     privacy, data-protection, publicity, or personality rights. Later
+     identification of the Affirmer does not revoke or alter the Waiver
+     or License except as Applicable Law provides.
+
+
+7. Machine Learning and Artificial Intelligence.
+
+  a. Training and Computational Uses.
+
+     The Waiver and License expressly include use of the Work as
+     training data and for text and data mining, computational analysis,
+     indexing, retrieval, embeddings, fine-tuning, validation, testing,
+     evaluation, and the development or deployment of artificial
+     intelligence or machine learning systems, for any purpose including
+     commercial purposes. Permission includes reproduction, storage,
+     preprocessing, and other acts within the Affirmer's rights that are
+     reasonably necessary for these uses. No additional permission from
+     the Affirmer, fee, attribution to the Affirmer, or disclosure of
+     the Affirmer's identity is required by this document.
+
+  b. Models and Outputs.
+
+     To the extent that making or using a model or output would
+     otherwise require the Affirmer's permission under Copyright and
+     Related Rights or Moral Rights, the permissions in this document
+     apply to that use. This document does not determine whether models
+     or outputs are protected, who owns them, or the rights of other
+     persons in other material. It imposes no requirement to open models
+     or weights, disclose training data, or identify the Affirmer, and
+     does not require omission of information required by law.
+
+
+8. Limitations and Disclaimers.
+
+  a. Excluded Rights.
+
+     Rights other than Copyright and Related Rights and Moral Rights are
+     not waived, abandoned, surrendered, licensed, or otherwise granted
+     by this document. Excluded rights include:
+
+       i. patent rights and patent applications;
+      ii. trademark, service mark, trade dress, and trade name rights;
+     iii. privacy, data-protection, publicity, and personality rights;
+      iv. trade secret rights and duties of confidentiality; or
+       v. any other rights not included in Copyright and Related Rights
+          or Moral Rights.
+
+     This document does not itself supply consent under data-protection
+     law.
+
+  b. Warranty Disclaimer.
+
+     THE WORK IS PROVIDED "AS-IS". TO THE EXTENT PERMITTED BY APPLICABLE
+     LAW, THE AFFIRMER DISCLAIMS ALL WARRANTIES AND CONDITIONS OF ANY
+     KIND CONCERNING THE WORK, WHETHER EXPRESS, IMPLIED, STATUTORY, OR
+     OTHERWISE, INCLUDING WARRANTIES OF TITLE, NON-INFRINGEMENT,
+     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY,
+     SAFETY, AND ABSENCE OF DEFECTS. THE AFFIRMER DOES NOT WARRANT THAT
+     THE WORK IS LAWFUL TO USE IN ANY PARTICULAR CONTEXT OR THAT ALL
+     RIGHTS HAVE BEEN CLEARED.
+
+  c. Limitation of Liability.
+
+     TO THE EXTENT PERMITTED BY APPLICABLE LAW, THE AFFIRMER IS NOT
+     LIABLE FOR ANY LOSS OR DAMAGE ARISING FROM THE USE OR INABILITY TO
+     USE THE WORK. NOTHING IN THIS DOCUMENT EXCLUDES OR LIMITS LIABILITY
+     THAT CANNOT LAWFULLY BE EXCLUDED OR LIMITED.
+
+  d. Third-Party Rights and Lawfulness.
+
+     Applying this document is not a representation that the Work was
+     lawfully created or obtained or is free of third-party rights,
+     confidential material, or other restrictions. Users remain
+     responsible for compliance with Applicable Law and for obtaining
+     any additional permissions needed. This document does not authorize
+     unlawful conduct or infringement of third-party rights.
+
+  e. Severability.
+
+     If any provision or application of this document is invalid,
+     unenforceable, or ineffective, it shall be given the maximum effect
+     permitted by Applicable Law and the remainder shall continue in
+     effect. Invalidity in one territory does not by itself determine
+     effect in another. The grants and permissions in this document
+     remain effective as to severable rights and portions of the Work
+     that the Affirmer can lawfully waive, license, or consent to.
+
+
+9. Interpretation.
+
+  a. No Additional Conditions.
+
+     Requests and guidance in this document are not conditions of the
+     Waiver or License. This document imposes no additional conditions
+     or restrictions on the rights granted by the Affirmer. Nothing in
+     this document limits rights a person already has under Applicable
+     Law or separate permission, or prevents additional permissions.
+
+  b. Liberal Construction.
+
+     This document shall be interpreted to maximize the public's freedom
+     to use the Work, consistent with the Statement of Purpose and to
+     the extent permitted by Applicable Law. If a permission is
+     ineffective in one form, it shall be given effect in any other form
+     permitted by Applicable Law.
+
+  c. Governing Law and Jurisdiction.
+
+     This document is intended to operate worldwide. The law applicable
+     to a particular issue, including its conflict-of-laws rules,
+     determines its effect. No exclusive governing law or forum is
+     designated.
+
+  d. Language.
+
+     This document is drafted in English. Translations are for
+     convenience. The English version prevails to the extent permitted
+     by Applicable Law.
+
+  e. Persons.
+
+     References to a person include any natural person, legal entity, or
+     other organization. Words in the singular include the plural and
+     vice versa unless the context requires otherwise.
+
+  f. Successors.
+
+     To the extent permitted by Applicable Law, the Waiver, License, and
+     the Affirmer's undertakings survive transfer of the relevant rights
+     and apply to Successors. A later transfer does not enlarge the
+     rights transferred beyond those still held by the Affirmer, subject
+     to Applicable Law. This document does not purport to bind persons
+     who are not otherwise bound by law.
+
+
+10. Effective Date and Term.
+
+  a. Effective Date and Application.
+
+     This document takes effect when it is applied to the Work by or on
+     behalf of the Affirmer by a notice or other manifest expression of
+     intent identifying the Work. The Waiver, and the License to the
+     extent it applies, take effect at that time to the extent permitted
+     by Applicable Law. No signature, registration, acceptance, notice,
+     or other act by a user or recipient is required by this document.
+     This does not override formalities that Applicable Law imposes on
+     the Affirmer.
+
+  b. Duration and Mandatory Rights.
+
+     The Waiver and License are intended to be irrevocable and to last
+     for the entire term of the relevant rights, including extensions
+     and renewals, to the extent permitted by Applicable Law. The
+     Affirmer's undertakings not to assert rights are irrevocable to the
+     extent permitted and apply while the relevant rights subsist.
+     Nothing in this document overrides mandatory termination,
+     withdrawal, recapture, remuneration, or other rights that cannot
+     lawfully be waived or restricted. Their existence does not
+     invalidate the remainder of this document.

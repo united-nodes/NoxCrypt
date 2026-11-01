@@ -1,0 +1,182 @@
+# Valgrind suppressions for tests/test_ct.c.
+#
+# Every entry below is a secret-dependent branch or index that has been
+# reviewed and is either (a) required by FIPS 203 / FIPS 204, (b) a
+# branch on public data that the harness marks as secret because the
+# library never sees it as public, or (c) a documented property of the
+# reference code.  The comment on each entry says which.
+#
+# These suppressions do not weaken the test.  Valgrind still reports
+# every *other* conditional jump, and any secret-dependent memory
+# access, anywhere in the library; `make ct` fails on such a report.
+# The entries only cover the exact branches listed here, and adding a
+# new one is a deliberate act that shows up in the diff of this file.
+#
+# Valgrind matches the innermost frame first, so an entry with a single
+# fun: line covers every call path into that function.  Wildcards are
+# used where the compiler may clone the function (constprop, isra).
+#
+# Summary of the reviewed branches:
+#
+#   classical layer   ncrypt_aead_read        tag comparison result
+#                     ncrypt_elligator_rev    point has a representative
+#                     ncrypt_elligator_key_pair  rejection loop
+#                     ncrypt_argon2/xor_block data-dependent indexing
+#                                             (inherent to Argon2d/id)
+#   ML-KEM            mlkem_rej_uniform       rejection sampling on the
+#                                             public matrix seed rho
+#                     ncrypt_mlkem768_decapsulate  decapsulation key
+#                                             check (public component)
+#   ML-DSA            mldsa_rej_uniform       rejection sampling
+#                     rej_eta                 rejection sampling
+#                     mldsa_poly_challenge    challenge decoding
+#                     mldsa_poly_chknorm       signing rejection tests
+#                     mldsa_signature_internal rejection branch
+#                     mldsa_make_hint / use_hint / pack_sig
+#                                             hint coefficients
+#                     mldsa_verify_internal   verification (public)
+#   hybrid            ncrypt_pqc_decrypt      propagates the AEAD branch
+
+{
+   classical-aead-tag-comparison-cond
+   Memcheck:Cond
+   fun:ncrypt_aead_read
+}
+
+{
+   classical-elligator-rev-representable-cond
+   Memcheck:Cond
+   fun:ncrypt_elligator_rev
+}
+
+{
+   classical-elligator-key-pair-retry-cond
+   Memcheck:Cond
+   fun:ncrypt_elligator_key_pair
+}
+
+{
+   classical-argon2-index-cond
+   Memcheck:Cond
+   fun:ncrypt_argon2
+}
+
+{
+   classical-argon2-index-value
+   Memcheck:Value8
+   fun:xor_block
+}
+
+{
+   classical-argon2-index-value-cond
+   Memcheck:Cond
+   fun:xor_block
+}
+
+{
+   mlkem-matrix-generation-cond
+   Memcheck:Cond
+   fun:mlkem_rej_uniform
+}
+
+{
+   mlkem-matrix-generation-cond-clone
+   Memcheck:Cond
+   fun:mlkem_gen_matrix
+}
+
+{
+   mlkem-dk-check-cond
+   Memcheck:Cond
+   fun:ncrypt_mlkem768_decapsulate
+}
+
+{
+   mlkem-ek-check-cond
+   Memcheck:Cond
+   fun:ncrypt_mlkem768_encapsulate
+}
+
+{
+   mldsa-rejection-sampling-cond
+   Memcheck:Cond
+   fun:mldsa_rej_uniform
+}
+
+{
+   mldsa-rejection-sampling-eta-cond
+   Memcheck:Cond
+   fun:rej_eta*
+}
+
+{
+   mldsa-rejection-sampling-wrapper-cond
+   Memcheck:Cond
+   fun:mldsa_poly_uniform*
+}
+
+{
+   mldsa-challenge-decoding-cond
+   Memcheck:Cond
+   fun:mldsa_poly_challenge
+}
+
+{
+   mldsa-challenge-decoding-value
+   Memcheck:Value8
+   fun:mldsa_poly_challenge
+}
+
+{
+   mldsa-norm-check-cond
+   Memcheck:Cond
+   fun:mldsa_poly_chknorm
+}
+
+{
+   mldsa-norm-check-cond-vector
+   Memcheck:Cond
+   fun:mldsa_polyvecl_chknorm
+}
+
+{
+   mldsa-norm-check-cond-vector-k
+   Memcheck:Cond
+   fun:mldsa_polyveck_chknorm
+}
+
+{
+   mldsa-signing-rejection-cond
+   Memcheck:Cond
+   fun:mldsa_signature_internal
+}
+
+{
+   mldsa-hint-encoding-cond
+   Memcheck:Cond
+   fun:mldsa_make_hint
+}
+
+{
+   mldsa-hint-decoding-cond
+   Memcheck:Cond
+   fun:mldsa_use_hint
+}
+
+{
+   mldsa-hint-packing-cond
+   Memcheck:Cond
+   fun:mldsa_pack_sig
+}
+
+{
+   mldsa-verify-cond
+   Memcheck:Cond
+   fun:mldsa_verify_internal
+}
+
+{
+   hybrid-decrypt-aead-cond
+   Memcheck:Cond
+   fun:ncrypt_pqc_decrypt
+}

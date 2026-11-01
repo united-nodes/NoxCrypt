@@ -1,0 +1,3 @@
+[submodule "vendor/libncrypt"]
+	path = vendor/libncrypt
+	url = https://github.com/united-nodes/libncrypt
