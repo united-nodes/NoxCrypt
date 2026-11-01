@@ -1,0 +1,562 @@
+.TH NOX 1 "2026-11-01" "nox 1.0.0" "NoxCrypt manual"
+.SH NAME
+nox \- hybrid encryption and signatures from the command line
+.SH SYNOPSIS
+.B nox
+.RI [ global\-option ...]
+.I command
+.RI [ option ...]
+.RI [ operand ...]
+.SH DESCRIPTION
+.B nox
+encrypts, decrypts, signs, and verifies files and streams with an
+identity that carries both classical and post\-quantum algorithms.
+It is deliberately small: no configuration file, no daemon, no
+network code, one job per subcommand, and plain files on disk. The
+cryptographic primitives come from the libncrypt library
+(XChaCha20\-Poly1305, X25519, Ed25519, BLAKE2b, Argon2id,
+ML\-KEM\-768, ML\-DSA\-44), consumed as a git submodule, so nothing
+outside the C library has to be installed.
+.PP
+An identity is a key pair. Its public half lives in a small binary
+file whose BLAKE2b\-256 fingerprint names it; its secret half is
+always locked with a passphrase and never leaves the keyring in the
+clear. Every document is a public key, a secret key, an encrypted
+message, or a detached signature, and every document can be written
+as raw binary or as PEM\-style ASCII armor.
+.PP
+Keys are named by a fingerprint prefix of at least eight hex
+characters, or by the full 64\-character fingerprint. A comment
+attached at generation time is for humans; it is signed, but nothing
+else depends on it.
+.SH ALGORITHM PROFILES
+An identity holds one or two signing algorithms and one or two
+encryption algorithms. The set is chosen when the key pair is
+created and is fixed for the life of the key.
+.TP
+.B hybrid
+Ed25519 + ML\-DSA\-44 (signing) and X25519 + ML\-KEM\-768
+(encryption). Both halves have to break for the key to be
+compromised, which is why it is the default. Signatures carry two
+signature packets and messages use the combined recipient format.
+.TP
+.B ecc
+Ed25519 + X25519. Small, fast, classical. There is no post\-quantum
+protection at all: a future quantum computer can recover the message
+key from a recorded ciphertext and forge signatures.
+.TP
+.B pqc
+ML\-DSA\-44 + ML\-KEM\-768. Post\-quantum only, with much larger
+signatures and public keys (about 2.4 kB and 1.3 kB) and no
+classical fallback.
+.TP
+.B mixed
+Any other valid pair, for example Ed25519 with ML\-KEM\-768.
+Selected with
+.B \-\-sig
+together with
+.BR \-\-kem ,
+not with a profile name.
+.PP
+ML\-KEM\-768 is a key encapsulation mechanism, not a cipher. It never
+encrypts file data itself: the shared secret it produces is hashed
+with BLAKE2b into an XChaCha20\-Poly1305 key, and that key wraps the
+random file key. A hybrid recipient mixes an ephemeral X25519
+Diffie\-Hellman result into the same hash, so both the classical and
+the post\-quantum secret are needed to unwrap.
+.PP
+Recipient selection follows the key set, not a preference of the
+sender. An identity holding both X25519 and ML\-KEM\-768 is always
+addressed with the combined recipient, an X25519\-only identity with
+the X25519 recipient, and an ML\-KEM\-768\-only identity with the
+ML\-KEM recipient. A flavor that does not match the identity is
+refused in both directions, which is what stops a hybrid key from
+being silently downgraded to its classical half.
+.SH COMMANDS
+.SS gen
+.B nox gen
+.RI [ \-A
+.IR profile ]
+.RI [ \-\-sig
+.IR alg
+.B \-\-kem
+.IR alg ]
+.RI [ \-c
+.IR comment ]
+.RI [ \-\-pub
+.IR file ]
+.RI [ \-\-sec
+.IR file ]
+.RI [ \-a ]
+.RI [ \-F
+.IR file ]
+.PP
+Generates an identity, stores both halves in the keyring, and prints
+the fingerprint on stdout. The passphrase is read twice from the
+terminal; there is no option to skip it and no way to change it
+later, so pick one worth keeping. The comment is validated before
+the first prompt.
+.TP
+.BR \-A ", " \-\-algo " " \fIprofile\fP
+One of
+.BR hybrid " (the default), " ecc ", or " pqc .
+.TP
+.BR \-\-sig " " \fIalg\fP
+Signing algorithm for a mixed pair:
+.B ed25519
+or
+.BR mldsa44 .
+Must be given together with
+.BR \-\-kem .
+.TP
+.BR \-\-kem " " \fIalg\fP
+Encryption algorithm for a mixed pair:
+.B x25519
+or
+.BR mlkem768 .
+Must be given together with
+.BR \-\-sig .
+.TP
+.BR \-c ", " \-\-comment " " \fItext\fP
+Free\-form label, printed by
+.BR "nox list" .
+UTF\-8, no line breaks, at most 1024 bytes.
+.TP
+.BR \-P ", " \-\-pub " " \fIfile\fP
+Also write the public key to
+.IR file .
+.TP
+.BR \-S ", " \-\-sec " " \fIfile\fP
+Also write the secret key to
+.IR file .
+It stays locked with the passphrase and is created mode 0600
+whatever the umask says.
+.TP
+.BR \-a ", " \-\-armor
+Armor the files written by
+.B \-\-pub
+and
+.BR \-\-sec .
+Files written to a terminal are armored regardless.
+.TP
+.BR \-F ", " \-\-passphrase\-file " " \fIfile\fP
+Read the passphrase from the first line of
+.I file
+instead of prompting. A line that does not fit in 1023 bytes is an
+error, not a truncation. Meant for scripts and tests.
+.SS encrypt
+.B nox encrypt
+.RI [ \-r
+.IR fp ]...
+.RI [ \-R
+.IR file ]...
+.RI | \-p
+.RI [ \-a ]
+.RI [ \-o
+.IR file ]
+.RI [ \-F
+.IR file ]
+.RI [ in ]
+.PP
+Encrypts
+.I in
+(or stdin) to one or more recipients and writes a NoxCrypt message.
+A message has one random file key, wrapped once per recipient, and a
+streaming XChaCha20\-Poly1305 payload. The recipient list is not
+secret; the file name and the exact size are not in the file.
+.TP
+.BR \-r ", " \-\-recipient " " \fIfp\fP
+A fingerprint prefix from the keyring. Repeat for several
+recipients.
+.TP
+.BR \-R ", " \-\-recipient\-file " " \fIfile\fP
+A public key file, armored or not. Repeat as needed; may be mixed
+with
+.BR \-r .
+.TP
+.BR \-p ", " \-\-passphrase
+Encrypt with a passphrase instead of public keys. A passphrase
+recipient is always alone; combining it with
+.B \-r
+or
+.B \-R
+is an error.
+.TP
+.BR \-a ", " \-\-armor
+Armor the message.
+.TP
+.BR \-o ", " \-\-output " " \fIfile\fP
+Write to
+.I file
+instead of stdout.
+.TP
+.BR \-F ", " \-\-passphrase\-file " " \fIfile\fP
+Read the passphrase from
+.IR file ;
+implies
+.BR \-p .
+.PP
+Binary output to a terminal is refused unless
+.B \-a
+is given, because a terminal will happily mangle a message into
+something that no longer decrypts.
+.SS decrypt
+.B nox decrypt
+.RI [ \-i
+.IR fp
+| \-p ]
+.RI [ \-o
+.IR file ]
+.RI [ \-F
+.IR file ]
+.RI [ in ]
+.PP
+Decrypts a message to stdout or
+.IR \-o .
+Without
+.B \-i
+the single secret key in the keyring is used; with several secret
+keys, one has to be named. Giving
+.B \-i
+together with
+.B \-p
+is an error: a passphrase message is not tied to any identity. The
+plaintext is written as it authenticates, chunk by chunk.
+.TP
+.BR \-i ", " \-\-identity " " \fIfp\fP
+Secret key to decrypt with, by fingerprint prefix.
+.TP
+.BR \-p ", " \-\-passphrase
+The message has a passphrase recipient.
+.TP
+.BR \-o ", " \-\-output " " \fIfile\fP
+Write to
+.I file
+instead of stdout.
+.TP
+.BR \-F ", " \-\-passphrase\-file " " \fIfile\fP
+Read the passphrase from
+.IR file .
+.PP
+A wrong passphrase, the wrong identity, and a tampered message all
+fail with a non\-zero exit status. With
+.BR \-o ,
+output is written to a temporary file and renamed into place only
+after the whole message has authenticated, so a failed decrypt
+leaves the previous content of the file untouched. When writing to a
+terminal or a pipe, plaintext arrives chunk by chunk and a late
+failure leaves earlier chunks already delivered.
+.SS sign
+.B nox sign
+.RI [ \-i
+.IR fp ]
+.RI [ \-a ]
+.RI [ \-o
+.IR file ]
+.RI [ \-F
+.IR file ]
+.RI [ in ]
+.PP
+Creates a detached signature over
+.I in
+(or stdin). The message is opened and hashed before the passphrase
+is asked for, so an unreadable input fails cheaply. It is streamed
+through BLAKE2b\-256 and never has to fit in memory. One signature
+packet is produced for every signing key of the identity: two for a
+hybrid identity, one for ecc or pqc. ML\-DSA\-44 signs with hedged
+randomness, so signing the same file twice yields different bytes
+that both verify.
+.TP
+.BR \-i ", " \-\-identity " " \fIfp\fP
+Signing key, by fingerprint prefix.
+.TP
+.BR \-a ", " \-\-armor
+Armor the signature.
+.TP
+.BR \-o ", " \-\-output " " \fIfile\fP
+Write to
+.I file
+instead of stdout.
+.TP
+.BR \-F ", " \-\-passphrase\-file " " \fIfile\fP
+Read the passphrase from
+.IR file .
+.SS verify
+.B nox verify
+.RI [ \-k
+.IR file
+| \-i
+.IR fp ]
+.I signature
+.RI [ message ]
+.PP
+Verifies a detached signature. Without
+.B \-k
+or
+.B \-i
+the fingerprint inside the signature selects the key from the
+keyring. Giving both is an error. On success exactly one line is
+printed, with exit status 0:
+.PP
+.RS 4
+.nf
+Good signature
+.fi
+.RE
+.PP
+Everything else, including a signature that omits an algorithm the
+public key demands, prints nothing to stdout and exits non\-zero.
+.TP
+.BR \-k ", " \-\-key " " \fIfile\fP
+Public key file to verify against, armored or not.
+.TP
+.BR \-i ", " \-\-identity " " \fIfp\fP
+Keyring entry to verify against, by fingerprint prefix.
+.SS list
+.B nox list
+.RI [ query ]
+.PP
+Lists the keyring, one block per key:
+.PP
+.RS 4
+.nf
+7f3c9d02...8b41  2026\-09\-10
+  hybrid: Ed25519 + ML\-DSA\-44 + X25519 + ML\-KEM\-768
+  "alice@example.com"
+.fi
+.RE
+.PP
+The first line is the fingerprint and the creation date in UTC, the
+second the profile and its algorithms, the third the comment in
+quotes. Keys with no secret half are marked
+.BR "(no secret key)" .
+Entries are sorted by fingerprint.
+.I query
+matches a fingerprint prefix or a substring of a comment.
+.SS export
+.B nox export
+.RI [ \-s ]
+.RI [ \-a ]
+.RI [ \-o
+.IR file ]
+.I fp
+.PP
+Writes a key out of the keyring. A public key is what you send to
+someone who wants to encrypt to you or verify your signatures.
+.TP
+.BR \-s ", " \-\-secret
+Export the secret key instead. The file is still locked with the
+passphrase, so it is only as sensitive as the passphrase is. The
+output file is created mode 0600 whatever the umask says.
+.TP
+.BR \-a ", " \-\-armor
+Armor the output.
+.TP
+.BR \-o ", " \-\-output " " \fIfile\fP
+Write to
+.I file
+instead of stdout.
+.SS import
+.B nox import
+.RI [ \-F
+.IR file ]
+.I file
+.PP
+Reads a public or a secret key file, armored or not, and stores it
+in the keyring. A secret key is unlocked first, so a wrong
+passphrase fails before anything is written. The fingerprint goes to
+stdout.
+.TP
+.BR \-F ", " \-\-passphrase\-file " " \fIfile\fP
+Read the passphrase from
+.IR file .
+.SS delete
+.B nox delete
+.I fp
+.PP
+Removes both halves of a key from the keyring. There is no undo and
+no confirmation prompt; export the secret key first if you may want
+it back.
+.SS info
+.B nox info
+.PP
+Prints the version, author, license, the algorithms this build
+knows, the cryptographic primitives, and a summary of the keyring.
+Works without a keyring.
+.SS help
+.B nox help
+.PP
+Prints the short usage summary. Every command also accepts
+.BR \-\-help .
+.SH GLOBAL OPTIONS
+Global options go before the command name and apply to it.
+.TP
+.BR \-\-home " " \fIdir\fP
+Use
+.I dir
+instead of
+.BR $HOME .
+The keyring is
+.IR dir /.nox
+and is created, with parents, mode 0700, if it does not exist. An
+existing directory with looser permissions is tightened to mode 0700
+before any key is written into it, and the command fails if that is
+not possible.
+.TP
+.BR \-\-faketime " " \fIseconds\fP
+Pretend the clock reads
+.I seconds
+since the Unix epoch when a timestamp is written. For reproducible
+tests, not for dating documents.
+.TP
+.BR \-\-version
+Print
+.B nox
+and the version number.
+.TP
+.BR \-\-help
+Print the usage summary.
+.SH OUTPUT FILES
+Files written through
+.BR \-o ,
+.B \-\-pub ,
+and
+.B \-\-sec
+are created under a temporary name in the destination directory
+(mode 0600), written completely, given their final mode, and renamed
+into place. A command that fails part way leaves the previous
+content of the destination untouched. Secret key output keeps mode
+0600; other output gets mode 0666 masked by the umask.
+.SH FILES
+.TP
+.I ~/.nox
+The keyring, mode 0700. Overridden by
+.B $NOX_HOME/.nox
+and by
+.BR \-\-home .
+.TP
+.IR fingerprint .pub
+Public key, mode 0600. The fingerprint is 64 lowercase hex
+characters.
+.TP
+.IR fingerprint .sec
+Secret key, mode 0600, always wrapped with Argon2id (t=3, m=65536
+KiB, p=1) and XChaCha20\-Poly1305.
+.PP
+Files passed on the command line may be raw NoxCrypt documents or
+armored, with the
+.B "BEGIN NOX ..."
+wrapper. Armored input is read leniently: whitespace inside the
+base64 body is ignored, header lines after
+.B BEGIN
+are skipped, missing padding is tolerated, and a leading UTF\-8 BOM
+is skipped.
+.SH ENVIRONMENT
+.TP
+.B NOX_HOME
+Directory that holds
+.IR .nox .
+.TP
+.B HOME
+Used when
+.B NOX_HOME
+is not set.
+.SH EXIT STATUS
+.TP
+.B 0
+Success.
+.TP
+.B 1
+Useful failure: bad passphrase, no matching key, a message that does
+not authenticate, a malformed file. A missing operand is also 1.
+.TP
+.B 2
+Usage error: unknown command or option.
+.SH EXAMPLES
+Create a default hybrid identity and list it:
+.PP
+.RS 4
+.nf
+nox gen \-c 'alice@example.com'
+nox list
+.fi
+.RE
+.PP
+Create a post\-quantum\-only key and a classical key:
+.PP
+.RS 4
+.nf
+nox gen \-A pqc \-c 'pqc key'
+nox gen \-A ecc \-c 'laptop'
+nox gen \-\-sig ed25519 \-\-kem mlkem768 \-c 'mixed pair'
+.fi
+.RE
+.PP
+Encrypt a file and hand out the public key:
+.PP
+.RS 4
+.nf
+nox export \-a \-o alice.pub 7f3c9d02
+nox encrypt \-r 7f3c9d02 \-a \-o note.nox.asc note.txt
+nox decrypt \-i 7f3c9d02 \-o note.txt note.nox.asc
+.fi
+.RE
+.PP
+Sign and verify over a pipe:
+.PP
+.RS 4
+.nf
+tar cf \- src | nox sign \-i 7f3c9d02 \-o archive.sig
+nox verify \-k alice.pub archive.sig < <(tar cf \- src)
+.fi
+.RE
+.PP
+Passphrase\-only encryption, no keys involved:
+.PP
+.RS 4
+.nf
+nox encrypt \-p \-a \-o backup.asc backup.tar
+nox decrypt \-p \-o backup.tar backup.asc
+.fi
+.RE
+.SH SECURITY NOTES
+Recipient selection is fail\-closed. A hybrid identity refuses a
+single\-algorithm recipient, a signature that omits one of the
+identity's signing algorithms is refused, unknown critical packets
+abort parsing, and there is no recovery mode that ignores a broken
+packet.
+.PP
+There is no forward secrecy. The file key is wrapped to a long\-term
+identity key, so anyone who obtains that secret key later, and kept
+the ciphertext, can read it then. The ephemeral X25519 key in a
+recipient belongs to the sender and is thrown away; that keeps the
+sender from needing a key of its own, but it does not make old
+ciphertexts unreadable after the recipient's key leaks.
+.PP
+Passphrase quality decides the fate of a secret key file. Argon2id
+at 64 MiB and three passes makes guessing expensive, not impossible.
+A short passphrase protects nothing.
+.PP
+Timestamps come from the system clock (or
+.BR \-\-faketime )
+and are covered by the identity self\-signature and by every
+signature, but nothing verifies that a date is plausible.
+.PP
+This implementation has not been independently audited. What its own
+review covered is recorded in
+.B REVIEW.md
+in the source tree; the format is specified in
+.BR doc/SPEC.md .
+.SH SEE ALSO
+.BR age (1),
+.BR minisign (1),
+.BR gpg (1)
+.PP
+The format specification, a longer manual, and the review record
+ship with the source tree as
+.BR doc/SPEC.md ,
+.BR doc/manual.md ,
+and
+.BR REVIEW.md .
+.SH AUTHOR
+Robert Yates Stanford

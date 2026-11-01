@@ -1,0 +1,13 @@
+*.o
+*.a
+*.s
+*.so
+*.bin
+*.exe
+*.*z
+
+test_classic
+test_pqc
+test_kat
+test_ct
+fuzz_pqc
